@@ -1,0 +1,164 @@
+* JWT
+
+This provides support for using JWT tokens (rfc7519).
+
+https://tools.ietf.org/html/rfc7519
+
+* Example
+
+#+BEGIN_SRC json
+  {
+    "iss": "jira:1314039",
+    "iat": 1300819370,
+    "exp": 1300819380,
+    "qsh": "8063ff4ca1e41df7bc90c8ab6d0f6207d491cf6dad7c66ea797b4614b71922e9",
+    "sub": "batman",
+    "context": {
+      "user": {
+        "email": "",
+        "username": "bwayne",
+        "displayName": "Bruce Wayne"
+      }
+    }
+  }
+#+END_SRC
+
+* Testing
+
+#+BEGIN_SRC http :pretty
+GET http://www.mocky.io/v2/5ba012bf30000012007b147c
+X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+#+END_SRC
+
+#+RESULTS:
+: {
+:   "message": "success"
+: }
+
+* Usage
+
+** Parse
+
+** Verify
+
+#+BEGIN_SRC elisp
+(require 'jwt)
+
+#+END_SRC
+
+** Sign
+
+#+BEGIN_SRC elisp
+(setq hmac-secret "my$ecretK3y")
+
+#+END_SRC
+
+#+BEGIN_SRC sh
+$ openssl genrsa -out private.pem 2048
+$ openssl rsa -in private.pem -out public.pem -outform PEM -pubout
+
+#+END_SRC
+
+* Resources
+
+- https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html
+- https://bitbucket.org/atlassian/atlassian-jwt-js
+- https://github.com/auth0-blog/nodejs-jwt-authentication-sample
+- https://auth0.com/learn/angularjs-authentication/
+- https://auth0.com/blog/create-your-first-ember-2-dot-0-app-from-authentication-to-calling-an-api/
+- https://bitbucket.org/atlassian/atlassian-jwt-js
+- https://datatracker.ietf.org/wg/jose/about/
+
+* Implementations
+
+See https://jwt.io/ for a full list of implementations.
+
+- Java: https://github.com/auth0/java-jwt
+
+#+BEGIN_SRC java
+  Algorithm algorithm = Algorithm.HMAC256("secret");
+
+  String token = JWT.create()
+      .withIssuer("auth0")
+      .sign(algorithm);
+
+  JWTVerifier verifier = JWT.require(algorithm)
+          .withIssuer("auth0")
+          .build(); //Reusable verifier instance
+  DecodedJWT jwt = verifier.verify(token);
+#+END_SRC
+
+- Clojure: https://github.com/liquidz/clj-jwt
+
+#+BEGIN_SRC clojure
+  (def claim
+    {:iss "foo"
+     :exp (plus (now) (days 1))
+     :iat (now)})
+
+  (let [token (-> claim jwt (sign :HS256 "secret") to-str)]
+    (-> token str->jwt (verify "secret")))
+#+END_SRC
+
+- Common Lisp: https://github.com/fukamachi/jose
+
+#+BEGIN_SRC lisp
+(defvar *key* (ironclad:ascii-string-to-byte-array "my$ecret"))
+
+(defvar *token*
+  (jose:encode :hs256 *key* '(("hello" . "world"))))
+
+
+#+END_SRC
+
+- Node: https://github.com/auth0/node-jsonwebtoken
+
+#+BEGIN_SRC javascript
+  const token = jwt.sign({ foo: 'bar' }, 'shhhhh');
+  const decoded = jwt.verify(token, 'shhhhh');
+#+END_SRC
+
+- Python: https://github.com/davedoesdev/python-jwt
+
+#+BEGIN_SRC python
+payload = { 'foo': 'bar', 'wup': 90 };
+token = jwt.generate_jwt(payload, key, 'PS256', datetime.timedelta(minutes=5))
+header, claims = jwt.verify_jwt(token, pub_key, ['RS256'])
+
+#+END_SRC
+
+
+- Rust: https://github.com/Keats/jsonwebtoken
+
+#+BEGIN_SRC rust
+let token = encode(&Header::default(), &my_claims, "secret".as_ref())?;
+let decoded = decode::<Claims>(&token, "secret".as_ref(), &Validation::default())?;
+
+
+#+END_SRC
+
+- Racket: https://pkgs.racket-lang.org/package/net-jwt
+
+#+BEGIN_SRC scheme
+  (decode-jwt
+   (encode-jwt #:iss "joe"
+               #:iat #f
+               #:exp 1300819380))
+
+#+END_SRC
+
+- Ruby: https://github.com/jwt/ruby-jwt
+
+#+BEGIN_SRC ruby
+  token = JWT.encode payload, hmac_secret, 'HS256'
+  token_rsa = JWT.encode payload, rsa_private, 'RS256'
+  decoded_token = JWT.decode token, hmac_secret, true, { algorithm: 'HS256' }
+
+#+END_SRC
+
+
+- Go
+- Elixir
+- Haskell
+- Scala

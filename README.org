@@ -43,7 +43,11 @@ X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwib
 ** Verify
 
 #+BEGIN_SRC elisp
-(require 'jwt)
+  (require 'jwt)
+  (decode-jwt
+   (encode-jwt #:iss "joe"
+               #:iat #f
+               #:exp 1300819380))
 
 #+END_SRC
 
@@ -168,7 +172,17 @@ let decoded = decode::<Claims>(&token, "secret".as_ref(), &Validation::default()
 
 #+END_SRC
 
+- Ruby: https://github.com/nov/json-jwt
 
+#+BEGIN_SRC ruby
+claim = {
+  iss: 'nov',
+  exp: 1.week.from_now,
+  nbf: Time.now
+}
+jws = JSON::JWT.new(claim).sign(private_key, :RS256)
+
+#+END_SRC
 - Go
 - Elixir
 - Haskell

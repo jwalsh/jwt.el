@@ -1,12 +1,14 @@
 ;; (require 'jwt.el)
+
+
 (require 'json)
 (require 's)
+(require 'dash)
+(require 'ht)
 
 ;; Payload and Header
 
-(let ((user "jwalsh"))
-  (json-read-from-string "[true, 4.5]"))
-
+;; Standardize time calculations
 (setq one-day (seconds-to-time (* 60 60 24)))
 
 (setq payload '((iss . "https://wal.sh")
@@ -18,7 +20,11 @@
 
 (floor (time-to-seconds (time-add (float-time) (days-to-time 1))))
 
+;; Threaded macro signature
 
+(--> "def" (concat "abc" it "ghi") upcase)
+
+;; Reserved keywords
 (setq header '((alg "none")
                (typ "")
                (cty "application/jtw")))

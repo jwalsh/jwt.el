@@ -1,18 +1,23 @@
 ;; (require 'jwt.el)
 (require 'json)
-
+(require 's)
 
 ;; Payload and Header
 
 (let ((user "jwalsh"))
   (json-read-from-string "[true, 4.5]"))
 
+(setq one-day (seconds-to-time (* 60 60 24)))
+
 (setq payload '((iss . "https://wal.sh")
                 (sub . "john-doe@example.com")
-                (exp (floor (- (float-time) (* 60 24))))
+                (exp (floor (+ (float-time) (* 60 60 24))))
                 (nbf (floor (float-time)))
                 (iat (floor (float-time)))
                 (name . "John Doe")))
+
+(floor (time-to-seconds (time-add (float-time) (days-to-time 1))))
+
 
 (setq header '((alg "none")
                (typ "")
@@ -36,6 +41,8 @@
 
 ;; Token
 
-(setq token (split-string "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" "."))
+(setq token (split-string "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" "\\."))
+
+(s-split "header.payload.signature" "\\.")
 
 (base64-encode-string "John Doe")

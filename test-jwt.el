@@ -20,9 +20,6 @@
 
 (floor (time-to-seconds (time-add (float-time) (days-to-time 1))))
 
-;; Threaded macro signature
-
-(--> "def" (concat "abc" it "ghi") upcase)
 
 ;; Reserved keywords
 (setq header '((alg "none")
@@ -52,3 +49,25 @@
 (s-split "header.payload.signature" "\\.")
 
 (base64-encode-string "John Doe")
+
+;; Threaded macro signature
+(setq bad-token "header.body.signature")
+(defun token-debug (token)
+  (--> token
+       downcase
+       print
+       (split-string "\\.")
+       cadr))
+
+(token-debug bad-token)
+
+((lambda (x) (* x x)) 2)
+
+
+(setq split-string-period
+     (lambda (s) (split-string s "\\.")))
+
+(--> bad-token
+     split-string-period)
+
+(split-string bad-token "\\.")

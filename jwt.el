@@ -3,8 +3,8 @@
 ;; Copyright (C) 2018 Free Software Foundation, Inc.
 
 ;; Author: Jason Walsh <j@wal.sh>
-;; Version: 1.0
-;; Package-Requires: ((json))
+;; Version: 0.1
+;; Package-Requires: ((emacs "24.1") (cl-lib "0.5") (json "1.4") (dash "2.10.0") (s "1.11.0")  (ht "2.2"))
 ;; Keywords: jwt, security
 ;; URL: http://wal.sh/jwt
 

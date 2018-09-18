@@ -18,12 +18,26 @@
   "Tools for working with JWT tokens."
   :group 'tools)
 
+(setq jwt-algorithms '((:ecdsa "ECDSA")
+                       (:hmac "HMAC")
+                       (:none "None")
+                       (:rsa "RSA")))
+
+(ert-deftest test-jwt-algorithm-defaut ()
+          (should (= (alist-get :hmac jwt-algorithms) "HMAC")))
+
+(defun jwt-encode (payload secret algorithm))
+
+(defun jwt-decode (token))
+
+(defvar jwt-run-tests nil)
+
+(eval-when-compile
+  (setq jwt-run-tests t))
 
 
-(defun jwt-decode (jti-payload hmac-secret algorithm))
-
-(defun jwt-encode (jti-payload hmac-secret algorithm))
-
-
+(when jwt-run-tests
+   (ert-deftest addition-test ()
+       (should (= (+ 1 2) 4))))
 
 ;;; jwt.el ends here

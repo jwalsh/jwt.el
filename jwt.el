@@ -70,14 +70,5 @@
   "Decode the payload for a JWT TOKEN."
   (message "jwt-decode"))
 
-(defvar jwt-run-tests nil)
-
-(eval-when-compile
-  (setq jwt-run-tests t))
-
-(when jwt-run-tests
-   (ert-deftest addition-test ()
-       (should (= (+ 1 2) 4))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; jwt.el ends here

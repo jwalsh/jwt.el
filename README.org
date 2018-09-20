@@ -44,11 +44,11 @@ X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwib
 
 #+BEGIN_SRC elisp
   (require 'jwt)
+
   (decode-jwt
    (encode-jwt #:iss "joe"
                #:iat #f
                #:exp 1300819380))
-
 #+END_SRC
 
 ** Sign

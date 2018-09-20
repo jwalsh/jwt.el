@@ -61,8 +61,24 @@
 
 (token-debug bad-token)
 
+(defmacro t-becomes-nil (variable)
+  `(if (eq ,variable t)
+       (setq ,variable nil)))
+
+(t-becomes-nil :foo)
+
 ((lambda (x) (* x x)) 2)
 
+(nth 0 '(1 2 3 4 5 6))
+
+(defun sum-fibonacci (n)
+  (labels ((i (a b acc)
+              (cond ((>= a n) acc)
+                    ((evenp a) (i (+ a b) a (+ a acc)))
+                    (t (i (+ a b) a acc)))))
+    (i 2 1 0)))
+
+(sum-fibonacci 2000)
 
 (setq split-string-period
      (lambda (s) (split-string s "\\.")))
